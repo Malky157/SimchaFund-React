@@ -23,8 +23,7 @@ const Contributions = () => {
     const onTextChange = (e) => {
         const copy = { currentContributor }
         copy[e.target.name] = e.target.value
-        setCurrentContributor(copy)
-        //console.log(currentContributor)
+        setCurrentContributor(copy)        
     }
 
     const onSwitched = (e) => {

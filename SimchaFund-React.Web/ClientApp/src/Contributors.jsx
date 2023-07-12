@@ -75,7 +75,4 @@ const Contributors = () => {
     </>
 }
 
-export default Contributors
-
-//inside <tbody>:
-// {contributorsInfo.contributors.filter(isInSearch(contributorsInfo.contributors.contributor)).map(i =>
+export default Contributors;
