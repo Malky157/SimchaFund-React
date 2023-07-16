@@ -24,14 +24,14 @@ namespace SimchaFund_React.Data
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            modelBuilder.Entity<Contributions>()
+            modelBuilder.Entity<Contribution>()
                 .HasKey(c => new { c.SimchaId, c.ContributorId });
 
         }
 
         public DbSet<Simcha> Simchas { get; set; }
         public DbSet<Contributor> Contributors { get; set; }
-        public DbSet<Contributions> Contributions { get; set; }
+        public DbSet<Contribution> Contributions { get; set; }
         public DbSet<Deposit> Deposits { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimchaFund_React.Data;
+using SimchaFund_React.Data.Migrations;
 using SimchaFund_React.Web.ViewModels;
 
 namespace SimchaFund_React.Web.Controllers
@@ -24,7 +25,7 @@ namespace SimchaFund_React.Web.Controllers
                 return;
             }
             var repo = new SimchaRepository(_connectionString);
-            repo.Add(simcha);
+            repo.AddSimcha(simcha);
         }
 
         [HttpGet]
@@ -50,25 +51,39 @@ namespace SimchaFund_React.Web.Controllers
         public ContributionsPageViewModel GetContributionsForSimcha(int id)
         {
             var repo = new SimchaRepository(_connectionString);
-            var contribRepo = new ContributorRepository(_connectionString);
-            var simcha = repo.GetSimchaById(id);
-            var contributors = contribRepo.GetContributors();
-            if (simcha == null)
-            {
-                return null;
-            }
+            var contriRepo = new ContributorRepository(_connectionString);
             var page = new ContributionsPageViewModel();
-            page.Simcha = simcha;
+            page.Simcha = repo.GetSimchaById(id);
+            var contributors = contriRepo.GetContributors();
             contributors.ForEach(c =>
             page.Contributors.Add(new ContributorViewModel()
             {
                 Contributor = c,
-                Balance = contribRepo.CalculateBalance(c.Id),
-                Contributed = repo.ContributorDidContributeToSimcha(c.Id, simcha.Id)
-               
-            }
-            ));
+                Balance = contriRepo.CalculateBalance(c.Id),
+                Contribution = repo.DidContributorContributeToSimcha(id, c.Id)
+            })
+            );
             return page;
+        }
+
+        [HttpPost]
+        [Route("addorupdatecontribution")]
+        public void AddOrUpdateContribution(List<Data.Contribution> contributions)
+        {
+            //??????????????DATA???????????????
+            var repo = new SimchaRepository(_connectionString);
+            foreach (Data.Contribution c in contributions)
+            {
+                if (repo.DidContributorContributeToSimcha(c.ContributorId, c.SimchaId) == null)
+                {
+                    repo.AddContribution(c);
+                }
+                else
+                {
+                    repo.UpdateContribution(c);
+                }
+            }
+
         }
     }
 }

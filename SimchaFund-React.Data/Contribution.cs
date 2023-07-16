@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SimchaFund_React.Data
 {
-    public class Contributions
+    public class Contribution
     {
         public int SimchaId { get; set; }
         [JsonIgnore]

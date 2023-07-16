@@ -23,7 +23,7 @@ const Contributions = () => {
     const onTextChange = (e) => {
         const copy = { currentContributor }
         copy[e.target.name] = e.target.value
-        setCurrentContributor(copy)        
+        setCurrentContributor(copy)
     }
 
     const onSwitched = (e) => {
@@ -39,8 +39,8 @@ const Contributions = () => {
 
         {contributionsInfo.simcha ?
             <div>
-                <h1>Contributions for {contributionsInfo.simcha.simchaName}</h1>
-                <table className="table table-bordered table-striped">
+                <h1 style={{ textAlign: "center", marginBottom: 20 }}>Contributions for {contributionsInfo.simcha.simchaName}</h1>
+                <table className="table table-bordered table-striped" style={{ textAlign: "center" }}>
                     <thead>
                         <tr>
                             <th>Contribute</th>
@@ -56,10 +56,11 @@ const Contributions = () => {
                                 key={c.contributor.id}
                                 contributor={c.contributor}
                                 balance={c.balance}
-                                amount={c.amount}
-                                //onTextChange={() => onTextChange(e)}
-                                onTextChange={() => onTextChange(c)} //??? Closures
-                                onSwitched={() => onSwitched(c)}
+                                contrib={c.contribution}
+                                alwaysInclude={c.contributor.alwaysInclude}
+                                amnt={c.contribution ? c.contribution.amount : 5}
+                            // onTextChange={() => onTextChange(c)} //??? Closures
+                            // onSwitched={() => onSwitched(c)}
                             />
                         )}
                     </tbody>
@@ -68,7 +69,7 @@ const Contributions = () => {
                     <button className="btn-lg btn-outline-danger" onClick={onUpdateClick}>Update</button>
                 </div>
             </div>
-            : <h1 style={{ fontSize: 240, color: 'red' }}>LOADING</h1>}
+            : <h1 style={{ fontSize: 200, color: 'red' }}>LOADING</h1>}
     </>
 }
 

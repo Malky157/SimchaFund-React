@@ -15,7 +15,7 @@ namespace SimchaFund_React.Data
             _connectionString = connectionString;
         }
 
-        public void Add(Simcha simcha)
+        public void AddSimcha(Simcha simcha)
         {
             if (simcha == null)
             {
@@ -57,10 +57,24 @@ namespace SimchaFund_React.Data
             return context.Simchas.FirstOrDefault(s => s.Id == simchaId);
         }
 
-        public bool ContributorDidContributeToSimcha(int contributorId, int simchaId)
+        public Contribution DidContributorContributeToSimcha(int contributorId, int simchaId)
         {
             var context = new SimchaFundDbContext(_connectionString);
-            return context.Contributions.Any(c => c.SimchaId == simchaId && c.ContributorId == contributorId);
+            return context.Contributions.FirstOrDefault(c => c.SimchaId == simchaId && c.ContributorId == contributorId);
+        }
+
+        public void AddContribution(Contribution contribution)
+        {
+            var context = new SimchaFundDbContext(_connectionString);
+            context.Contributions.Add(contribution);
+            context.SaveChanges();
+        }
+
+        public void UpdateContribution(Contribution contribution)
+        {
+            var context = new SimchaFundDbContext(_connectionString);
+            context.Contributions.Update(contribution);
+            context.SaveChanges();
         }
     }
 }

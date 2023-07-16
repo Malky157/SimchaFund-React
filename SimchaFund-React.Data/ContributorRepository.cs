@@ -39,13 +39,13 @@ namespace SimchaFund_React.Data
         public decimal CalculateBalance(int contributorId)
         {
             var context = new SimchaFundDbContext(_connectionString);
-            var contributor = context.Contributors.Include(c => c.Deposits).FirstOrDefault(c => c.Id == contributorId);
-            return contributor.Deposits.Sum(d => d.Amount);
+            return context.Contributors.Include(c => c.Deposits).FirstOrDefault(c => c.Id == contributorId).Deposits.Sum(d => d.Amount)
+                - context.Contributions.Where(c => c.ContributorId == contributorId).Sum(c => c.Amount);
         }
 
         public void Update(Contributor contributor)
         {
-           
+
             var context = new SimchaFundDbContext(_connectionString);
             var c = context.Contributors.FirstOrDefault(c => c.Id == contributor.Id);
             if (c != null)
@@ -57,7 +57,7 @@ namespace SimchaFund_React.Data
                 context.Contributors.Attach(c);
                 context.Update(c);
                 context.SaveChanges();
-            }           
+            }
         }
 
         public bool IsIdValid(int id)
@@ -69,8 +69,8 @@ namespace SimchaFund_React.Data
         public decimal CalculateTotalBalance()
         {
             var context = new SimchaFundDbContext(_connectionString);
-            return context.Deposits.Sum(d => d.Amount);
-
+            return context.Deposits.Sum(d => d.Amount)
+                - context.Contributions.Sum(c => c.Amount);
         }
     }
 }

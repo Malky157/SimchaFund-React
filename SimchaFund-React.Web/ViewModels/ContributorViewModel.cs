@@ -6,6 +6,6 @@ namespace SimchaFund_React.Web.ViewModels
     {
         public Contributor Contributor { get; set; }
         public decimal Balance { get; set; }
-        public bool Contributed { get; set; }
+        public Contribution Contribution { get; set; }
     }
 }
