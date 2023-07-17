@@ -34,15 +34,16 @@ namespace SimchaFund_React.Web.Controllers
         {
             var page = new SimchaPageViewModel();
             var repo = new SimchaRepository(_connectionString);
+            var contributionRepo = new ContributionRepository(_connectionString);
             var simchas = repo.GetAllSimchas();
             simchas.ForEach(s =>
            page.Simchas.Add(new SimchaViewModel()
            {
                Simcha = s,
-               ContributorCount = repo.GetContributorCountForSimcha(s.Id),
+               ContributorCount = contributionRepo.GetContributorCountForSimcha(s.Id),
                TotalAmount = repo.GetTotalAmountForSimcha(s.Id)
            }));
-            page.TotalAmountContributors = repo.GetTotalContributors();
+            page.TotalAmountContributors = contributionRepo.GetTotalContributors();
             return page;
         }
 
@@ -51,16 +52,17 @@ namespace SimchaFund_React.Web.Controllers
         public ContributionsPageViewModel GetContributionsForSimcha(int id)
         {
             var repo = new SimchaRepository(_connectionString);
-            var contriRepo = new ContributorRepository(_connectionString);
+            var contributorRepo = new ContributorRepository(_connectionString);
+            var contributionRepo = new ContributionRepository(_connectionString);
             var page = new ContributionsPageViewModel();
             page.Simcha = repo.GetSimchaById(id);
-            var contributors = contriRepo.GetContributors();
+            var contributors = contributorRepo.GetContributors();
             contributors.ForEach(c =>
             page.Contributors.Add(new ContributorViewModel()
             {
                 Contributor = c,
-                Balance = contriRepo.CalculateBalance(c.Id),
-                Contribution = repo.DidContributorContributeToSimcha(id, c.Id)
+                Balance = contributorRepo.CalculateBalance(c.Id),
+                Contribution = contributionRepo.DidContributorContributeToSimcha(id, c.Id)
             })
             );
             return page;
@@ -70,17 +72,17 @@ namespace SimchaFund_React.Web.Controllers
         [Route("addorupdatecontribution")]
         public void AddOrUpdateContribution(List<Data.Contribution> contributions)
         {
-            //??????????????DATA???????????????
-            var repo = new SimchaRepository(_connectionString);
+            //??????????????DATA.???????????????           
+            var contributionRepo = new ContributionRepository(_connectionString);
             foreach (Data.Contribution c in contributions)
             {
-                if (repo.DidContributorContributeToSimcha(c.ContributorId, c.SimchaId) == null)
+                if (contributionRepo.DidContributorContributeToSimcha(c.ContributorId, c.SimchaId) == null)
                 {
-                    repo.AddContribution(c);
+                    contributionRepo.AddContribution(c);
                 }
                 else
                 {
-                    repo.UpdateContribution(c);
+                    contributionRepo.UpdateContribution(c);
                 }
             }
 

@@ -30,6 +30,20 @@ namespace SimchaFund_React.Web.Controllers
                     Date = vm.DateCreated
                 });
             }
+            if (vm.AlwaysInclude)
+            {
+                var simchaRepo = new SimchaRepository(_connectionString);
+                var simchas = simchaRepo.GetAllSimchas();
+                foreach (Simcha simcha in simchas)
+                {
+                    simchaRepo.AddContribution(new Contribution()
+                    {
+                        ContributorId = vm.Id,
+                        SimchaId = simcha.Id,
+                        Amount = 5,
+                    });
+                }
+            }
         }
 
         [HttpGet]
@@ -54,11 +68,26 @@ namespace SimchaFund_React.Web.Controllers
         public void UpdateContributor(Contributor editableContributor)
         {
             var repo = new ContributorRepository(_connectionString);
+            var simchaRepo = new SimchaRepository(_connectionString);
             if (editableContributor == null)
             {
                 return;
             }
             repo.Update(editableContributor);
+            if (editableContributor.AlwaysInclude)
+            {
+
+                var simchas = simchaRepo.GetAllSimchas();
+                foreach (Simcha simcha in simchas)
+                {
+                    simchaRepo.AddContribution(new Contribution()
+                    {
+                        ContributorId = editableContributor.Id,
+                        SimchaId = simcha.Id,
+                        Amount = 5,
+                    });
+                }
+            }
         }
     }
 }
