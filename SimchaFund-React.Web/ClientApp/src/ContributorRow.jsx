@@ -60,7 +60,9 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
             <td>{`$${balance.toFixed(2)}`}</td>
             <td>
                 {!editMode ? backendContributor.alwaysInclude && <i className="bi bi-check-lg" style={{ fontSize: "30" }} />
-                    : <div className="form-check-sm mt-1 ml-3">
+                    :
+                    <div className="form-check-sm mt-1 ml-3">
+
                         <input type="checkbox" className="form-check-input" name="alwaysInclude" checked={editableContributor.alwaysInclude} onChange={onCheckboxClick} />
                     </div>}
             </td>
@@ -72,7 +74,7 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
                             <button className="btn btn-outline-primary"
                                 style={{ marginRight: 10 }}>Show History</button>
                         </Link>
-                        
+
                         <button className="btn btn-outline-danger" onClick={() => setEditMode(true)}>Edit</button>
                     </div>
                     : <div>

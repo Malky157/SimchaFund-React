@@ -37,7 +37,7 @@ const ContributionsRow = ({ contributor, balance, contrib, amnt, alwaysInclude }
             </td>
             <td>{`${contributor.firstName} ${contributor.lastName}`}</td>
             <td>
-                {`${parseInt(balance).toFixed(2)}`}
+                {`$${parseInt(balance).toFixed(2)}`}
             </td>
             <td>
                 {contributor.alwaysInclude && <i style={{ fontSize: 25 }} className="bi bi-check" />}

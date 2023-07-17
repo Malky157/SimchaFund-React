@@ -69,14 +69,14 @@ const Home = () => {
                     </button>}
             </div>
 
-            <table className="table table-bordered">
+            <table className="table table-bordered" style={{ textAlign: 'center' }}>
                 <thead>
                     <tr>
                         <th>Contributions</th>
                         <th>Simcha Name</th>
                         <th>Contributor Count</th>
-                        <th>Total</th>
-                        <th>Date</th>
+                        <th>Total Raised</th>
+                        <th>Date of Simcha</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,7 +89,7 @@ const Home = () => {
                             </td>
                             <td>{i.simcha.simchaName}</td>
                             <td>{`${i.contributorCount} / ${simchasInfo.totalAmountContributors}`}</td>
-                            <td>{i.totalAmount}</td>
+                            <td>{`$${parseInt(i.totalAmount).toFixed(2)}`}</td>
                             <td>{dayjs(i.simcha.date).format('MM/DD/YY')}</td>
                         </tr>
                     )}

@@ -25,7 +25,20 @@ namespace SimchaFund_React.Web.Controllers
                 return;
             }
             var repo = new SimchaRepository(_connectionString);
+            var contributionRepo = new ContributionRepository(_connectionString);
             repo.AddSimcha(simcha);
+            var contributors = contributionRepo.GetContributorsWhoAlwaysInclude();
+            foreach (var contributor in contributors)
+            {
+                contributionRepo.AddContribution(new Data.Contribution()
+                {
+                    ContributorId = contributor.Id,
+                    SimchaId = simcha.Id,
+                    Amount = 5,
+                    Date = DateTime.Now
+                });
+            }
+
         }
 
         [HttpGet]
@@ -62,7 +75,7 @@ namespace SimchaFund_React.Web.Controllers
             {
                 Contributor = c,
                 Balance = contributorRepo.CalculateBalance(c.Id),
-                Contribution = contributionRepo.DidContributorContributeToSimcha(id, c.Id)
+                Contribution = contributionRepo.DidContributorContributeToSimcha(c.Id, id)
             })
             );
             return page;

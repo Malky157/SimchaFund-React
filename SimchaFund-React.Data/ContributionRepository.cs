@@ -31,6 +31,7 @@ namespace SimchaFund_React.Data
         {
             var context = new SimchaFundDbContext(_connectionString);
             return context.Contributions.FirstOrDefault(c => c.SimchaId == simchaId && c.ContributorId == contributorId);
+            //return context.Database.ExecuteSqlInterpolated($"Select * From Contributions Where ContributorId = {contributorId} And SimchaId = {simchaId}")
         }
         public void AddContribution(Contribution contribution)
         {
@@ -53,5 +54,10 @@ namespace SimchaFund_React.Data
             context.SaveChanges();
         }
 
+        public List<Contributor> GetContributorsWhoAlwaysInclude()
+        {
+            var context = new SimchaFundDbContext(_connectionString);
+            return context.Contributors.Where(c => c.AlwaysInclude).ToList();
+        }
     }
 }
