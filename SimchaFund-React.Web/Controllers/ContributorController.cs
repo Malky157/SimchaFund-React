@@ -32,11 +32,12 @@ namespace SimchaFund_React.Web.Controllers
             }
             if (vm.AlwaysInclude)
             {
+                var contributionRepo = new ContributionRepository(_connectionString);
                 var simchaRepo = new SimchaRepository(_connectionString);
                 var simchas = simchaRepo.GetAllSimchas();
                 foreach (Simcha simcha in simchas)
                 {
-                    simchaRepo.AddContribution(new Contribution()
+                    contributionRepo.AddContribution(new Contribution()
                     {
                         ContributorId = vm.Id,
                         SimchaId = simcha.Id,
@@ -69,6 +70,7 @@ namespace SimchaFund_React.Web.Controllers
         {
             var repo = new ContributorRepository(_connectionString);
             var simchaRepo = new SimchaRepository(_connectionString);
+            var contributionRepo = new ContributionRepository(_connectionString);
             if (editableContributor == null)
             {
                 return;
@@ -80,7 +82,7 @@ namespace SimchaFund_React.Web.Controllers
                 var simchas = simchaRepo.GetAllSimchas();
                 foreach (Simcha simcha in simchas)
                 {
-                    simchaRepo.AddContribution(new Contribution()
+                    contributionRepo.AddContribution(new Contribution()
                     {
                         ContributorId = editableContributor.Id,
                         SimchaId = simcha.Id,
