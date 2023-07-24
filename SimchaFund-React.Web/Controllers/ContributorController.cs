@@ -78,16 +78,19 @@ namespace SimchaFund_React.Web.Controllers
             repo.Update(editableContributor);
             if (editableContributor.AlwaysInclude)
             {
-
                 var simchas = simchaRepo.GetAllSimchas();
                 foreach (Simcha simcha in simchas)
                 {
-                    contributionRepo.AddContribution(new Contribution()
+                    if (contributionRepo.DidContributorContributeToSimcha == null && repo.CalculateBalance(editableContributor.Id) > 0)
                     {
-                        ContributorId = editableContributor.Id,
-                        SimchaId = simcha.Id,
-                        Amount = 5,
-                    });
+                        contributionRepo.AddContribution(new Contribution()
+                        {
+                            ContributorId = editableContributor.Id,
+                            SimchaId = simcha.Id,
+                            Amount = 5,
+                            Date = DateTime.Now
+                        });
+                    }
                 }
             }
         }

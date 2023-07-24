@@ -26,19 +26,22 @@ namespace SimchaFund_React.Web.Controllers
             }
             var repo = new SimchaRepository(_connectionString);
             var contributionRepo = new ContributionRepository(_connectionString);
+            var contributorRepo = new ContributorRepository(_connectionString);
             repo.AddSimcha(simcha);
             var contributors = contributionRepo.GetContributorsWhoAlwaysInclude();
             foreach (var contributor in contributors)
             {
-                contributionRepo.AddContribution(new Data.Contribution()
+                if (contributorRepo.CalculateBalance(contributor.Id) > 0)
                 {
-                    ContributorId = contributor.Id,
-                    SimchaId = simcha.Id,
-                    Amount = 5,
-                    Date = DateTime.Now
-                });
+                    contributionRepo.AddContribution(new Data.Contribution()
+                    {
+                        ContributorId = contributor.Id,
+                        SimchaId = simcha.Id,
+                        Amount = 5,
+                        Date = DateTime.Now
+                    });
+                }
             }
-
         }
 
         [HttpGet]
@@ -67,8 +70,10 @@ namespace SimchaFund_React.Web.Controllers
             var repo = new SimchaRepository(_connectionString);
             var contributorRepo = new ContributorRepository(_connectionString);
             var contributionRepo = new ContributionRepository(_connectionString);
-            var page = new ContributionsPageViewModel();
-            page.Simcha = repo.GetSimchaById(id);
+            var page = new ContributionsPageViewModel
+            {
+                Simcha = repo.GetSimchaById(id)
+            };
             var contributors = contributorRepo.GetContributors();
             contributors.ForEach(c =>
             page.Contributors.Add(new ContributorViewModel()
@@ -83,22 +88,10 @@ namespace SimchaFund_React.Web.Controllers
 
         [HttpPost]
         [Route("addorupdatecontribution")]
-        public void AddOrUpdateContribution(List<Data.Contribution> contributions)
+        public void AddOrUpdateContribution(UpdateContributionsViewModel vm)
         {
-            //??????????????DATA.???????????????           
             var contributionRepo = new ContributionRepository(_connectionString);
-            foreach (Data.Contribution c in contributions)
-            {
-                if (contributionRepo.DidContributorContributeToSimcha(c.ContributorId, c.SimchaId) == null)
-                {
-                    contributionRepo.AddContribution(c);
-                }
-                else
-                {
-                    contributionRepo.UpdateContribution(c);
-                }
-            }
-
+            contributionRepo.UpdateContributionsForSimcha(vm.SimchaId, vm.Contributions);
         }
     }
 }

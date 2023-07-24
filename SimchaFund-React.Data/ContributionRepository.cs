@@ -31,8 +31,8 @@ namespace SimchaFund_React.Data
         {
             var context = new SimchaFundDbContext(_connectionString);
             return context.Contributions.FirstOrDefault(c => c.SimchaId == simchaId && c.ContributorId == contributorId);
-            //return context.Database.ExecuteSqlInterpolated($"Select * From Contributions Where ContributorId = {contributorId} And SimchaId = {simchaId}")
         }
+
         public void AddContribution(Contribution contribution)
         {
             var context = new SimchaFundDbContext(_connectionString);
@@ -40,17 +40,30 @@ namespace SimchaFund_React.Data
             context.SaveChanges();
         }
 
-        public void UpdateContribution(Contribution contribution)
+        public void UpdateContributionsForSimcha(int simchaId, List<Contribution> contributions)
         {
             var context = new SimchaFundDbContext(_connectionString);
-            context.Contributions.Update(contribution);
+            var contributorRepo = new ContributorRepository(_connectionString);
+            DeleteContributionsForSimcha(simchaId);
+            foreach (Contribution contribution in contributions)
+            {
+                if (contributorRepo.CalculateBalance(contribution.ContributorId) < contribution.Amount)
+                {
+                    //send back mess. "Insufficient funds for {contributor.FirstName} {contributor.LastName} to donate to the {Simcha.SimchaName}
+                    return;
+                }
+                if (contribution.ContributorId != 0 && contribution.SimchaId != 0)
+                {
+                    AddContribution(contribution);
+                }
+            }
             context.SaveChanges();
         }
 
-        public void DeleteContribution(int contributorId)
+        private void DeleteContributionsForSimcha(int simchaId)
         {
             var context = new SimchaFundDbContext(_connectionString);
-            context.Database.ExecuteSqlInterpolated($"Delete Contributions Where ContributorId = {contributorId}");
+            context.Database.ExecuteSqlInterpolated($"Delete Contributions Where SimchaId = {simchaId}");
             context.SaveChanges();
         }
 

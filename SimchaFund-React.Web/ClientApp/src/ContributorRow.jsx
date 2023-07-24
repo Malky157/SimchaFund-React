@@ -34,6 +34,7 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
         const copy = { ...editableContributor }
         copy[e.target.name] = e.target.checked;
         setEditableContributor(copy);
+
     }
 
     const onDepositClick = () => {

@@ -7,31 +7,36 @@ import ContributionsRow from "./ContributionsRow";
 const Contributions = () => {
 
     const navigate = useNavigate();
-    const { id } = useParams();
-    const [contributionsInfo, setContributionsInfo] = useState({});
-
+    const { id: simchaId } = useParams();
+    const [contributionsInfo, setContributionsInfo] = useState({
+        simcha: {},
+        contributors: []
+    });
+    const [contributions, setContributions] = useState([]);
 
     useEffect(() => {
-        getContributions();
-    }, [])
+        const loadData = async () => {
+            const { data } = await axios.get(`/api/simcha/getcontributionsforsimcha?id=${simchaId}`)
+            setContributionsInfo(data);
+            setContributions(data.contributors.filter(c => c.contribution !== null).flatMap(c => c.contribution));
+        }
+        loadData();
+    }, []);
 
-    const getContributions = async () => {
-        const { data } = await axios.get(`/api/simcha/getcontributionsforsimcha?id=${id}`)
-        setContributionsInfo(data)
+    const updateContributionsArray = (contribution, isContributing) => {
+        if (isContributing) {
+            if (contributions.find(c => c.contributorId === contribution.contributorId)) {
+                setContributions([...contributions.filter(c => c.contributorId !== contribution.contributorId), contribution])
+            } else {
+                setContributions([...contributions, contribution])
+            }
+        } else {
+            setContributions([...contributions.filter(c => c.contributorId !== contribution.contributorId)])
+        }
     }
 
-    const onTextChange = (e) => {
-        const copy = { currentContributor }
-        copy[e.target.name] = e.target.value
-        setCurrentContributor(copy)
-    }
-
-    const onSwitched = (e) => {
-        setCurrentContributor(currentContributor[e.target.name] = e.target.value)
-    }
-
-    const onUpdateClick = () => {
-
+    const onUpdate = async () => {
+        await axios.post('/api/simcha/addorupdatecontribution', { contributions, simchaId })
         navigate('/')
     }
 
@@ -55,18 +60,19 @@ const Contributions = () => {
                             <ContributionsRow
                                 key={c.contributor.id}
                                 contributor={c.contributor}
+                                simchaId={contributionsInfo.simcha.id}
                                 balance={c.balance}
-                                contrib={c.contribution}
-                                alwaysInclude={c.contributor.alwaysInclude}
+                                contribute={!!c.contribution}
                                 amnt={c.contribution ? c.contribution.amount : 5}
-                            // onTextChange={() => onTextChange(c)} //??? Closures
-                            // onSwitched={() => onSwitched(c)}
+                                onAnyChange={updateContributionsArray}
+
                             />
                         )}
                     </tbody>
                 </table>
                 <div style={{ textAlign: "center" }}>
-                    <button className="btn-lg btn-outline-danger" onClick={onUpdateClick}>Update</button>
+                    <button className="btn btn-outline-info" style={{ marginRight: 5 }} onClick={onUpdate}>Update</button>
+                    <button className="btn btn-outline-warning" onClick={() => navigate('/')}>Cancel</button>
                 </div>
             </div>
             : <h1 style={{ fontSize: 200, color: 'red' }}>LOADING</h1>}

@@ -89,7 +89,7 @@ const Home = () => {
                             </td>
                             <td>{i.simcha.simchaName}</td>
                             <td>{`${i.contributorCount} / ${simchasInfo.totalAmountContributors}`}</td>
-                            <td>{`$${parseInt(i.totalAmount).toFixed(2)}`}</td>
+                            <td>{`$${i.totalAmount.toFixed(2)}`}</td>
                             <td>{dayjs(i.simcha.date).format('MM/DD/YY')}</td>
                         </tr>
                     )}
