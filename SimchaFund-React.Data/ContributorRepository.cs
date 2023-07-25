@@ -29,6 +29,12 @@ namespace SimchaFund_React.Data
             return context.Contributors.OrderBy(c => c.LastName).ToList();
         }
 
+        public Contributor GetContributor(int id)
+        {
+            var context = new SimchaFundDbContext(_connectionString);
+            return context.Contributors.Include(c => c.Deposits).FirstOrDefault(c => c.Id == id);
+        }
+
         public void AddDeposit(Deposit deposit)
         {
             var context = new SimchaFundDbContext(_connectionString);
@@ -63,7 +69,7 @@ namespace SimchaFund_React.Data
         public bool ContributorIdIsValid(int id)
         {
             var context = new SimchaFundDbContext(_connectionString);
-            bool x= context.Contributors.Any(c => c.Id == id);
+            bool x = context.Contributors.Any(c => c.Id == id);
             return x;
         }
 

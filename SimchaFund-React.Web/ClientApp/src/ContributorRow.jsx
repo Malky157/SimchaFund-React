@@ -5,7 +5,7 @@ import DepositModal from "./DepositModal";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ShowHistory from "./ShowHistory";
 
-const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
+const ContributorRow = ({ backendContributor, balance, refreshTable, setShowCaption, setContributorAlwaysInclude }) => {
 
     const [editMode, setEditMode] = useState(false);
     const [editableContributor, setEditableContributor] = useState({ ...backendContributor });
@@ -15,11 +15,13 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
         await axios.post('api/contributor/updatecontributor', { ...editableContributor })
         await refreshTable();
         setEditMode(false);
+        setShowCaption(false);
     }
 
     const onCancelClick = async () => {
         setEditableContributor(backendContributor)
         setEditMode(false);
+        setShowCaption(false);
     }
 
     const onTextChange = (e) => {
@@ -32,13 +34,19 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
         const copy = { ...editableContributor }
         copy[e.target.name] = e.target.checked;
         setEditableContributor(copy);
+        setContributorAlwaysInclude(e.target.checked)
+    }
 
+    const onEditClick = () => {
+        setEditMode(true);
+        setContributorAlwaysInclude(backendContributor.alwaysInclude)
+        setShowCaption(true);
     }
 
     return <>
         <tr style={{ textAlign: 'center' }}>
             <td>
-                <button type="button" disabled={editMode} onClick={() => { setShow(true) }} className="btn btn-outline-success" variant="primary">Deposit </button>
+                <button type="button" disabled={editMode} onClick={() => setShow(true)} className="btn btn-outline-success" variant="primary">Deposit </button>
                 <DepositModal
                     show={show}
                     contributor={backendContributor}
@@ -60,10 +68,14 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
             <td>
                 {!editMode ? backendContributor.alwaysInclude && <i className="bi bi-check-lg" style={{ fontSize: "30" }} />
                     :
-                    <div className="form-check-sm mt-1 ml-3">
+                    <div>
+                        <div className="form-check-sm mt-1 ml-3">
+                            <input type="checkbox" className="form-check-input" name="alwaysInclude" checked={editableContributor.alwaysInclude} onChange={onCheckboxClick} />
+                            <span style={{ marginLeft: 4 }}>*</span>
+                        </div>
 
-                        <input type="checkbox" className="form-check-input" name="alwaysInclude" checked={editableContributor.alwaysInclude} onChange={onCheckboxClick} />
-                    </div>}
+                    </div>
+                }
             </td>
             <td>
                 {!editMode ?
@@ -74,7 +86,7 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
                                 style={{ marginRight: 10 }}>Show History</button>
                         </Link>
 
-                        <button className="btn btn-outline-danger" onClick={() => setEditMode(true)}>Edit</button>
+                        <button className="btn btn-outline-danger" onClick={onEditClick}>Edit</button>
                     </div>
                     : <div>
                         <button className="btn btn-outline-info" style={{ marginRight: 10 }} onClick={onSaveClick}>Save</button>

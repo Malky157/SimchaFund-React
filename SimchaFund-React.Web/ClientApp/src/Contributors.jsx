@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ContributorRow from "./ContributorRow";
 
 const Contributors = () => {
@@ -11,6 +11,8 @@ const Contributors = () => {
         contributors: []
     });
     const [searchText, setSearchText] = useState('')
+    const [showCaption, setShowCaption] = useState(false)
+    const [contributorAlwaysInclude, setContributorAlwaysInclude] = useState('')
 
     useEffect(() => {
         getContributors();
@@ -22,8 +24,8 @@ const Contributors = () => {
     }
 
     const onSearchTextChange = (e) => {
-        setSearchText(e.target.value);       
-    }    
+        setSearchText(e.target.value);
+    }
     const isInSearch = (contributor) => {
         return searchText.length > 0 ?
             contributor.firstName.toLowerCase().includes(searchText.toLowerCase())
@@ -67,9 +69,17 @@ const Contributors = () => {
                         backendContributor={i.contributor}
                         balance={i.balance}
                         refreshTable={getContributors}
+                        setShowCaption={setShowCaption}
+                        setContributorAlwaysInclude={setContributorAlwaysInclude}
                     />
                 )}
             </tbody>
+            {showCaption && <caption style={{ fontSize: 10.5 }}>{contributorAlwaysInclude ? `By unchecking this checkbox, you will no longer be added automatically to future simchos, however to uncontribute to any previous simchos you must visit the
+            ${<Link to='/'>Simchas Page</Link>} and do so manually.`
+                :
+                "By checking this checkbox, you will automatically be contributing to all current Simchos."
+            }
+            </caption>}
         </table>
 
     </>

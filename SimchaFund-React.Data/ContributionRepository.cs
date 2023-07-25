@@ -40,6 +40,12 @@ namespace SimchaFund_React.Data
             context.SaveChanges();
         }
 
+        public List<Contribution> GetContributionsForContributor(int contributorId)
+        {
+            var context = new SimchaFundDbContext(_connectionString);
+            return context.Contributions.Where(c => c.ContributorId == contributorId).ToList();
+        }
+
         public void UpdateContributionsForSimcha(int simchaId, List<Contribution> contributions)
         {
             var context = new SimchaFundDbContext(_connectionString);

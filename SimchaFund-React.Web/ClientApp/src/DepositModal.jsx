@@ -13,6 +13,11 @@ const DepositModal = ({ contributor, show, setShow, refreshTable }) => {
 
     const onCancelClick = () => {
         setShow(false)
+        setDeposit({
+            contributorId: contributor.id,
+            amount: '',
+            date: new Date()
+        })
     }
     const isValid = (deposit.amount.length > 0 && parseInt(deposit.amount) > 0)
     const onSaveClick = async () => {

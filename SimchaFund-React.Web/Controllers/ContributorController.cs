@@ -105,6 +105,50 @@ namespace SimchaFund_React.Web.Controllers
                 repo.AddDeposit(deposit);
             }
 
-        }        
+        }
+
+        [HttpGet]
+        [Route("gethistory")]
+        public HistoryViewModel GetHistory(int id)
+        {
+            var repo = new ContributorRepository(_connectionString);
+            var contributionRepo = new ContributionRepository(_connectionString);
+
+            var contributor = repo.GetContributor(id);
+            var contributions = contributionRepo.GetContributionsForContributor(id);
+            var historyPage = new HistoryViewModel()
+            {
+                ContributorId = contributor.Id,
+                ContributorName = contributor.FirstName + " " + contributor.LastName,
+                ContributorBalance = repo.CalculateBalance(id),
+            };
+            contributor.Deposits.ForEach(d =>
+            historyPage.Transactions.Add(new Transaction()
+            {
+                Id = d.Id,
+                Action = "Deposit",
+                Amount = d.Amount,
+                Date = d.Date
+            })
+            );
+            contributions.ForEach(c =>
+
+            historyPage.Transactions.Add(new Transaction()
+            {
+                Id = c.SimchaId,
+                Action = FormulateContributionActionText(c.SimchaId),
+                Amount = c.Amount
+            })
+            );
+            historyPage.Transactions.OrderByDescending(t => t.Date);
+            return historyPage;
+        }
+
+        private string FormulateContributionActionText(int simchaId)
+        {
+            var simchaRepo = new SimchaRepository(_connectionString);
+            var simcha = simchaRepo.GetSimchaById(simchaId);
+            return $"Contribution for the {simcha.SimchaName}";
+        }
     }
 }
