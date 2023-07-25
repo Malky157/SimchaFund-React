@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-//import ReactModal from "react-modal";
-// import { Modal } from "bootstrap";
-// import DepositModal from "./DepositModal";
+import DepositModal from "./DepositModal";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ShowHistory from "./ShowHistory";
 
@@ -11,7 +9,7 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
 
     const [editMode, setEditMode] = useState(false);
     const [editableContributor, setEditableContributor] = useState({ ...backendContributor });
-    //const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [show, setShow] = useState(false);
 
     const onSaveClick = async () => {
         await axios.post('api/contributor/updatecontributor', { ...editableContributor })
@@ -37,16 +35,16 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
 
     }
 
-    const onDepositClick = () => {
-
-    }
-
     return <>
         <tr style={{ textAlign: 'center' }}>
             <td>
-                <div>
-                    <button disabled={editMode} className="btn btn-outline-success" onClick={onDepositClick}>Deposit</button>
-                </div>
+                <button type="button" disabled={editMode} onClick={() => { setShow(true) }} className="btn btn-outline-success" variant="primary">Deposit </button>
+                <DepositModal
+                    show={show}
+                    contributor={backendContributor}
+                    setShow={() => setShow()}
+                    refreshTable={refreshTable}
+                />
             </td>
             <td>{!editMode ? `${backendContributor.firstName} ${backendContributor.lastName}`
                 : <div>
@@ -84,8 +82,7 @@ const ContributorRow = ({ backendContributor, balance, refreshTable }) => {
                     </div>
                 }
             </td>
-        </tr >
+        </tr>
     </>
 }
-
 export default ContributorRow;

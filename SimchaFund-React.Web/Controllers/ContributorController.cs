@@ -94,5 +94,17 @@ namespace SimchaFund_React.Web.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        [Route("adddeposit")]
+        public void AddDeposit(Deposit deposit)
+        {
+            var repo = new ContributorRepository(_connectionString);
+            if (repo.ContributorIdIsValid(deposit.ContributorId))
+            {
+                repo.AddDeposit(deposit);
+            }
+
+        }        
     }
 }

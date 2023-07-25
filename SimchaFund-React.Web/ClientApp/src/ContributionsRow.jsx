@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import dayjs from "dayjs";
-//import axios from "axios";
+import React, { useState } from "react";
 
 const ContributionsRow = ({ contributor, balance, contribute, amnt, onAnyChange, simchaId }) => {
 

@@ -60,10 +60,11 @@ namespace SimchaFund_React.Data
             }
         }
 
-        public bool IsIdValid(int id)
+        public bool ContributorIdIsValid(int id)
         {
             var context = new SimchaFundDbContext(_connectionString);
-            return context.Contributors.Any(c => c.Id == id);
+            bool x= context.Contributors.Any(c => c.Id == id);
+            return x;
         }
 
         public decimal CalculateTotalBalance()
