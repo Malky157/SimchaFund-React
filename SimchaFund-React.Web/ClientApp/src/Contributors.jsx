@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import ContributorRow from "./ContributorRow";
 
 const Contributors = () => {
@@ -74,11 +74,12 @@ const Contributors = () => {
                     />
                 )}
             </tbody>
-            {showCaption && <caption style={{ fontSize: 10.5 }}>{contributorAlwaysInclude ? `By unchecking this checkbox, you will no longer be added automatically to future simchos, however to uncontribute to any previous simchos you must visit the
-            ${<Link to='/'>Simchas Page</Link>} and do so manually.`
-                :
-                "By checking this checkbox, you will automatically be contributing to all current Simchos."
-            }
+            {showCaption && <caption style={{ fontSize: 10.5 }}>
+                {contributorAlwaysInclude ? "By unchecking this checkbox, you will no longer be added automatically to future simchos, however to uncontribute to any previous simchos you must visit the " +
+                    "Simchas Page and do so manually."
+                    :
+                    "By checking this checkbox, you will automatically be contributing to all current Simchos."}
+
             </caption>}
         </table>
 

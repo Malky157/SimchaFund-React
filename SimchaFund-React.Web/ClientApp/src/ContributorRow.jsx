@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import DepositModal from "./DepositModal";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import ShowHistory from "./ShowHistory";
 
 const ContributorRow = ({ backendContributor, balance, refreshTable, setShowCaption, setContributorAlwaysInclude }) => {
 

@@ -20,6 +20,7 @@ namespace SimchaFund_React.Web.Controllers
         public void AddContributor(NewContributorViewModel vm)
         {
             var repo = new ContributorRepository(_connectionString);
+            //string message = string.Empty;
             repo.AddContributor(vm);
             if (vm.InitialDeposit != 0)
             {
@@ -29,7 +30,12 @@ namespace SimchaFund_React.Web.Controllers
                     Amount = vm.InitialDeposit,
                     Date = vm.DateCreated
                 });
+                //message = "success";
             }
+            //else
+            //{
+            //    message = "warning";
+            //}
             if (vm.AlwaysInclude)
             {
                 var contributionRepo = new ContributionRepository(_connectionString);
@@ -45,6 +51,7 @@ namespace SimchaFund_React.Web.Controllers
                     });
                 }
             }
+            //return message;
         }
 
         [HttpGet]
@@ -122,25 +129,21 @@ namespace SimchaFund_React.Web.Controllers
                 ContributorName = contributor.FirstName + " " + contributor.LastName,
                 ContributorBalance = repo.CalculateBalance(id),
             };
-            contributor.Deposits.ForEach(d =>
-            historyPage.Transactions.Add(new Transaction()
-            {
-                Id = d.Id,
-                Action = "Deposit",
-                Amount = d.Amount,
-                Date = d.Date
-            })
-            );
-            contributions.ForEach(c =>
-
-            historyPage.Transactions.Add(new Transaction()
-            {
-                Id = c.SimchaId,
-                Action = FormulateContributionActionText(c.SimchaId),
-                Amount = c.Amount
-            })
-            );
-            historyPage.Transactions.OrderByDescending(t => t.Date);
+            var transactions = contributor.Deposits.Select(d =>
+           new Transaction()
+           {
+               Id = d.Id,
+               Action = "Deposit",
+               Amount = d.Amount,
+               Date = d.Date
+           }).Concat(contributions.Select(c => new Transaction()
+           {
+               Id = c.SimchaId,
+               Action = FormulateContributionActionText(c.SimchaId),
+               Amount = c.Amount,
+               Date = c.Date
+           }));
+            historyPage.Transactions = transactions.OrderBy(t => t.Date).ToList();
             return historyPage;
         }
 
@@ -148,7 +151,7 @@ namespace SimchaFund_React.Web.Controllers
         {
             var simchaRepo = new SimchaRepository(_connectionString);
             var simcha = simchaRepo.GetSimchaById(simchaId);
-            return $"Contribution for the {simcha.SimchaName}";
+            return $"Contribution to the {simcha.SimchaName}";
         }
     }
 }

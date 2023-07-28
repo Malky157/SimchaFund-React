@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 const ShowHistory = () => {
 

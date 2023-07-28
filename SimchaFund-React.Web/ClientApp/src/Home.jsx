@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import AlertMessage from "./AlertMessage";
 
 
 const Home = () => {
@@ -16,6 +17,8 @@ const Home = () => {
         date: new Date()
     });
     //const [isValid, setIsValid] = useState(false)
+    const [simchaAlertMessage, setSimchaAlertMessage] = useState('')
+    const [searchText, setSearchText] = useState('')
     const getSimchas = async () => {
         const { data } = await axios.get('api/simcha/getallsimchas')
         setSimchasInfo(data);
@@ -35,7 +38,8 @@ const Home = () => {
     }
 
     const onAddClick = async () => {
-        await axios.post('api/simcha/addsimcha', simcha)
+        const { data } = await axios.post('api/simcha/addsimcha', simcha)
+        setSimchaAlertMessage(data)
         setAddMode(false);
         setSimcha({
             simchaName: '',
@@ -45,13 +49,28 @@ const Home = () => {
         getSimchas();
     }
 
+    const onSearchTextChange = (e) => {
+        setSearchText(e.target.value);
+    }
+
+    const isInSearch = (simcha) => {
+        return searchText.length > 0 ?
+            simcha.simchaName.toLowerCase().includes(searchText.toLowerCase())
+            : true
+    }
+
     return <>
         <div className="container">
             <div>
                 <h1>Simchas</h1>
             </div>
-
-            <div className="" style={{ marginBottom: 25 }}>
+            {(!!simchaAlertMessage.length && !addMode) &&
+                <AlertMessage
+                    message={simchaAlertMessage}
+                    event={'simcha'}
+                />
+            }
+            <div style={{ marginBottom: 10 }}>
                 {addMode ? <div className="row">
                     <div className="col-md-3">
                         <input type="text" className="form-control" placeholder="Simcha Name" name="simchaName" value={simcha.simchaName} onChange={onTextChange} />
@@ -64,9 +83,18 @@ const Home = () => {
                         <button className="btn btn-outline-warning" onClick={() => { setAddMode(false) }}>Cancel</button>
                     </div>
                 </div>
-                    : <button className="btn btn-outline-danger" onClick={() => setAddMode(true)}>
-                        New Simcha
-                    </button>}
+                    : <>
+                        <div className="form-control-sm">
+                            <button className="btn btn-outline-danger" style={{ marginRight: 35 }} onClick={() => setAddMode(true)}>
+                                New Simcha
+                            </button>
+
+                            <input type="text" className="form-control-sm" value={searchText} placeholder="Search" onChange={onSearchTextChange} />
+                            <button className="btn btn-outline-danger " onClick={() => setSearchText('')}>Clear</button>
+
+                        </div>
+                    </>
+                }
             </div>
 
             <table className="table table-bordered" style={{ textAlign: 'center' }}>
@@ -80,7 +108,7 @@ const Home = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {simchasInfo.simchas.map(i =>
+                    {simchasInfo.simchas.filter(s => isInSearch(s.simcha)).map(i =>
                         <tr key={i.simcha.id}>
                             <td>
                                 <Link to={`/contributions/${i.simcha.id}`}>

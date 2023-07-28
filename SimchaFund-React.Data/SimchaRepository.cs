@@ -29,7 +29,7 @@ namespace SimchaFund_React.Data
         public List<Simcha> GetAllSimchas()
         {
             var context = new SimchaFundDbContext(_connectionString);
-            return context.Simchas.ToList();
+            return context.Simchas.OrderBy(s => s.Date).ToList();
         }
 
         public decimal GetTotalAmountForSimcha(int simchaId)

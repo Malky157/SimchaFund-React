@@ -18,11 +18,12 @@ namespace SimchaFund_React.Web.Controllers
 
         [HttpPost]
         [Route("addsimcha")]
-        public void AddSimcha(Simcha simcha)
+        public string AddSimcha(Simcha simcha)
         {
+
             if (simcha.SimchaName == "")
             {
-                return;
+                return "warning";
             }
             var repo = new SimchaRepository(_connectionString);
             var contributionRepo = new ContributionRepository(_connectionString);
@@ -31,7 +32,7 @@ namespace SimchaFund_React.Web.Controllers
             var contributors = contributionRepo.GetContributorsWhoAlwaysInclude();
             foreach (var contributor in contributors)
             {
-                if (contributorRepo.CalculateBalance(contributor.Id) > 0)
+                if (contributorRepo.CalculateBalance(contributor.Id) >= 5)
                 {
                     contributionRepo.AddContribution(new Data.Contribution()
                     {
@@ -42,6 +43,7 @@ namespace SimchaFund_React.Web.Controllers
                     });
                 }
             }
+            return "success";
         }
 
         [HttpGet]
