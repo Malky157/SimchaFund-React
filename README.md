@@ -1,1 +1,1 @@
-This project almost complete
+This project is almost complete
