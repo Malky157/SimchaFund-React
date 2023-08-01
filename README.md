@@ -1,4 +1,4 @@
- To Migrate the database:
+ To migrate the database:
 
  Run the following two commands in the `SimchaFund-React\SimchaFund-React.Data>`
  
