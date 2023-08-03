@@ -27,7 +27,7 @@ Then on the command line you can go to the web project folder `SimchaFund-React.
 and run `dotnet watch run` 
 
 ## Usage
-**Home page**
+### **Home page**
 
 To add a Simcha click the add simcha buuton
 
@@ -48,7 +48,7 @@ and you will see a page that looks like this, where it will show you which contr
 ![image](https://github.com/Malky157/SimchaFund-React/assets/129129116/0680da7a-2a9e-4a15-95fb-dad4b9bcc774)
 
 
-**Contributions page**
+### **Contributions page**
 
 To add a contributor press the add contributor button
 ![image](https://github.com/Malky157/SimchaFund-React/assets/129129116/23474e1b-db0c-4896-923e-5c0549f0ccec)
