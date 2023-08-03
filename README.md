@@ -27,4 +27,4 @@ Then on the command line you can go to the web project folder `SimchaFund-React.
 and run `dotnet watch run` 
 
 ##
-This project is not completly finished yet.
+This project is not completely  finished yet.
