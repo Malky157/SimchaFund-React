@@ -26,7 +26,7 @@ and change the Data Source to your SQL server name.
 Then on the command line you can go to the web project folder `SimchaFund-React.Web/`
 and run `dotnet watch run` 
 
-## Usage
+## Users Guide
 ### **Home page**
 
 To add a Simcha click the add simcha buuton
