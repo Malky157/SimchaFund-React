@@ -26,5 +26,5 @@ and change the Data Source to your SQL server name.
 Then on the command line you can go to the web project folder `SimchaFund-React.Web/`
 and run `dotnet watch run` 
 
-
+##
 This project is not completly finished yet.
