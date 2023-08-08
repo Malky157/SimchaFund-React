@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ContributionsRow from "./ContributionsRow";
+import AlertMessage from "./AlertMessage";
 
 const Contributions = () => {
 
@@ -13,15 +14,18 @@ const Contributions = () => {
         contributors: []
     });
     const [contributions, setContributions] = useState([]);
+    const [messages, setMessages] = useState([])
 
     useEffect(() => {
-        const loadData = async () => {
-            const { data } = await axios.get(`/api/simcha/getcontributionsforsimcha?id=${simchaId}`)
-            setContributionsInfo(data);
-            setContributions(data.contributors.filter(c => c.contribution !== null).flatMap(c => c.contribution));
-        }
+
         loadData();
     }, []);
+
+    const loadData = async () => {
+        const { data } = await axios.get(`/api/simcha/getcontributionsforsimcha?id=${simchaId}`)
+        setContributionsInfo(data);
+        setContributions(data.contributors.filter(c => c.contribution !== null).flatMap(c => c.contribution));
+    }
 
     const updateContributionsArray = (contribution, isContributing) => {
         if (isContributing) {
@@ -36,15 +40,31 @@ const Contributions = () => {
     }
 
     const onUpdate = async () => {
-        await axios.post('/api/simcha/addorupdatecontribution', { contributions, simchaId })
-        navigate('/')
+        const { data } = await axios.post('/api/simcha/addorupdatecontribution', { contributions, simchaId })
+        if (!data.length) {
+            navigate('/')
+        } else {
+
+            setMessages(data)
+            //setContributions(contributionsInfo.contributors.filter(c => c.contribution !== null).flatMap(c => c.contribution));
+        }
+
     }
 
     return <>
 
         {contributionsInfo.simcha ?
-            <div>
+            <div className="container">
                 <h1 style={{ textAlign: "center", marginBottom: 20 }}>Contributions for {contributionsInfo.simcha.simchaName}</h1>
+                {
+                    !!messages.length && messages.map(i =>
+                        <AlertMessage
+                            key={i}
+                            message={i}
+                            event={'unsuccessfullUpdate'}
+                        />
+                    )
+                }
                 <table className="table table-bordered table-striped" style={{ textAlign: "center" }}>
                     <thead>
                         <tr>

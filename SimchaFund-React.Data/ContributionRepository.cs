@@ -46,24 +46,28 @@ namespace SimchaFund_React.Data
             return context.Contributions.Where(c => c.ContributorId == contributorId).ToList();
         }
 
-        public void UpdateContributionsForSimcha(int simchaId, List<Contribution> contributions)
+        public List<string> UpdateContributionsForSimcha(int simchaId, List<Contribution> contributions)
         {
             var context = new SimchaFundDbContext(_connectionString);
             var contributorRepo = new ContributorRepository(_connectionString);
+            var simchaRepo = new SimchaRepository(_connectionString);
+            List<string> messages = new();
             DeleteContributionsForSimcha(simchaId);
             foreach (Contribution contribution in contributions)
             {
                 if (contributorRepo.CalculateBalance(contribution.ContributorId) < contribution.Amount)
                 {
-                    //send back mess. "Insufficient funds for {contributor.FirstName} {contributor.LastName} to donate to the {Simcha.SimchaName}
-                    return;
+                    var contributor = contributorRepo.GetContributor(contribution.ContributorId);
+                    var simcha = simchaRepo.GetSimchaById(contribution.SimchaId);
+                    messages.Add(new string($"Insufficient funds for {contributor.FirstName} {contributor.LastName} to donate to the {simcha.SimchaName} simcha"));
                 }
-                if (contribution.ContributorId != 0 && contribution.SimchaId != 0)
+                else if (contribution.ContributorId != 0 && contribution.SimchaId != 0)
                 {
                     AddContribution(contribution);
                 }
             }
             context.SaveChanges();
+            return messages;
         }
 
         private void DeleteContributionsForSimcha(int simchaId)

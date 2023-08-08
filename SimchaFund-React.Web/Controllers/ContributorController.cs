@@ -129,21 +129,23 @@ namespace SimchaFund_React.Web.Controllers
                 ContributorName = contributor.FirstName + " " + contributor.LastName,
                 ContributorBalance = repo.CalculateBalance(id),
             };
+            var random = new Random();
             var transactions = contributor.Deposits.Select(d =>
            new Transaction()
            {
-               Id = d.Id,
+               Id = random.Next(),
                Action = "Deposit",
                Amount = d.Amount,
                Date = d.Date
+
            }).Concat(contributions.Select(c => new Transaction()
            {
-               Id = c.SimchaId,
+               Id = random.Next(),
                Action = FormulateContributionActionText(c.SimchaId),
                Amount = c.Amount,
                Date = c.Date
            }));
-            historyPage.Transactions = transactions.OrderBy(t => t.Date).ToList();
+            historyPage.Transactions = transactions.OrderBy(t => t.Date.Minute).ToList();
             return historyPage;
         }
 

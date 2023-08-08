@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SimchaFund_React.Data;
 using SimchaFund_React.Data.Migrations;
 using SimchaFund_React.Web.ViewModels;
+using System;
 
 namespace SimchaFund_React.Web.Controllers
 {
@@ -90,10 +91,10 @@ namespace SimchaFund_React.Web.Controllers
 
         [HttpPost]
         [Route("addorupdatecontribution")]
-        public void AddOrUpdateContribution(UpdateContributionsViewModel vm)
+        public List<string> AddOrUpdateContribution(UpdateContributionsViewModel vm)
         {
             var contributionRepo = new ContributionRepository(_connectionString);
-            contributionRepo.UpdateContributionsForSimcha(vm.SimchaId, vm.Contributions);
+            return contributionRepo.UpdateContributionsForSimcha(vm.SimchaId, vm.Contributions);
         }
     }
 }

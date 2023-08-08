@@ -73,7 +73,7 @@ const NewContributor = () => {
                         <input type="checkbox" className="form-check-input" name="alwaysInclude" checked={contributor.alwaysInclude} onChange={onCheckboxClick} />
                         <div className="row mt-3">
                             <label className="form-check-label">Always Include</label>
-                            <label className="form-check-label" style={{ fontSize: 10.5 }}>By clicking here you will atomatically be contributing to all current Simchos.</label>
+                            <label className="form-check-label" style={{ fontSize: 10.5 }}>By clicking here you will atomatically be contributing to all current and future  Simchos.</label>
                         </div>
                     </div>
                 </div>

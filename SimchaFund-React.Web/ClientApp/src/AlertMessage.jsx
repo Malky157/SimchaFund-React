@@ -20,7 +20,7 @@ const AlertMessage = ({ message, event }) => {
                     copy.color = 'black',
                     copy.text = 'Simcha added successfully'
                 setAlertVariables(copy)
-            } else {
+            } else if (event === 'warning') {
                 const copy = { ...alertVariables };
                 copy.variant = 'warning',
                     copy.backgroundColor = '#f5cdd3',
@@ -28,6 +28,14 @@ const AlertMessage = ({ message, event }) => {
                     copy.text = 'Simcha was not added successfully, please try again'
                 setAlertVariables(copy)
             }
+        }
+        else if (event === 'unsuccessfullUpdate') {
+            const copy = { ...alertVariables };
+            copy.variant = 'warning',            
+            copy.backgroundColor = '#fff8d2',
+                copy.color = 'black',
+                copy.text = message
+            setAlertVariables(copy)
         }
 
     }
