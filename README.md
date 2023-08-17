@@ -73,10 +73,3 @@ You can also click Show History to see all of the contributor's deposits and con
 ![image](https://github.com/Malky157/SimchaFund-React/assets/129129116/e29b018d-7545-471c-96a9-b5607dc03cde)
 
 ![image](https://github.com/Malky157/SimchaFund-React/assets/129129116/1be5290b-77fa-4df6-9585-5bdc694b0ee0)
-
-
-
-
-
-##
-This project is not completely finished yet.
