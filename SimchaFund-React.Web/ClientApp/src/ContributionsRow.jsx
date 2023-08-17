@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 const ContributionsRow = ({ contributor, balance, contribute, amnt, onAnyChange, simchaId }) => {
 
     const [contribution, setContribution] = useState({
@@ -10,33 +11,30 @@ const ContributionsRow = ({ contributor, balance, contribute, amnt, onAnyChange,
     });
     const [isContributing, setIsContributing] = useState(contribute)
 
-    const onTextChange = (e) => {
-        const copy = { ...contribution }
-        //if backspace everything, says NaN                    
-        if (e.nativeEvent.data === '.') {
-            copy[e.target.name] = e.target.value
-        }
-        else if (isNaN(e.nativeEvent.data)) {
-            copy[e.target.name] = parseFloat(e.target.value.replace(NaN, 5));
-        }
-        else {
-            copy[e.target.name] = parseFloat(e.target.value)
-        }
-        setContribution(copy)
-    }
-
     const onSwitch = (e) => {
         setIsContributing(e.target.checked)
         onAnyChange(contribution, e.target.checked)
     }
 
+    const onTextChange = (e) => {
+        const copy = { ...contribution }
+        copy[e.target.name] = parseFloat(e.target.value)
+        setContribution(copy)
+    }
+
     const onBlur = (e) => {
         const copy = { ...contribution }
-        copy[e.target.name] = (`${parseFloat(e.target.value).toFixed(2)}`);
+        copy[e.target.name] = e.target.value ? (`${parseFloat(e.target.value).toFixed(2)}`) : parseFloat(5).toFixed(2);
         setContribution(copy)
         if (isContributing) {
             onAnyChange(contribution, isContributing)
         }
+    }
+
+    const onFocus = (e) => {
+        const copy = { ...contribution }
+        copy[e.target.name] = parseFloat(contribution.amount).toFixed(0)
+        setContribution(copy)
     }
 
     return <>
@@ -56,8 +54,11 @@ const ContributionsRow = ({ contributor, balance, contribute, amnt, onAnyChange,
                 {contributor.alwaysInclude && <i style={{ fontSize: 25 }} className="bi bi-check" />}
             </td>
             <td><>
-                <input type="text" name="amount" value={contribution.amount} style={{ width: "6.5em", paddingLeft: "1.5em" }} onBlur={onBlur} onChange={onTextChange} />
+
+                <input type="number" name="amount" value={isNaN(contribution.amount) ? "" : contribution.amount} style={{ width: "6.5em", paddingLeft: "1.5em" }} onBlur={onBlur} onChange={onTextChange} onFocus={onFocus} />
                 <span style={{ marginLeft: "-5.5em", marginRight: "10em" }}>$</span>
+
+
             </></td>
         </tr >
     </>
