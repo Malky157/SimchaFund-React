@@ -79,4 +79,4 @@ You can also click Show History to see all of the contributor's deposits and con
 
 
 ##
-This project is not completely  finished yet.
+This project is not completely finished yet.
