@@ -26,6 +26,7 @@ const Contributors = () => {
     const onSearchTextChange = (e) => {
         setSearchText(e.target.value);
     }
+    
     const isInSearch = (contributor) => {
         return searchText.length > 0 ?
             contributor.firstName.toLowerCase().includes(searchText.toLowerCase())
@@ -85,5 +86,4 @@ const Contributors = () => {
 
     </>
 }
-
 export default Contributors;

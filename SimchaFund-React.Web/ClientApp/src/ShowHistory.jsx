@@ -52,5 +52,4 @@ const ShowHistory = () => {
         </div>
     </>
 }
-
 export default ShowHistory;

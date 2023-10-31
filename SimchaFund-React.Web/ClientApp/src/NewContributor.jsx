@@ -41,7 +41,6 @@ const NewContributor = () => {
     return <>
 
         <h1>New Contributor</h1>
-
         <form onSubmit={onFormSubmit}>
             <div className="row">
                 <div className="form-group col-md-4">

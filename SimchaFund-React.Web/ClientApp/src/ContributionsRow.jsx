@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 const ContributionsRow = ({ contributor, balance, contribute, amnt, onAnyChange, simchaId }) => {
 
     const [contribution, setContribution] = useState({
@@ -58,9 +57,8 @@ const ContributionsRow = ({ contributor, balance, contribute, amnt, onAnyChange,
                 <input type="number" name="amount" value={isNaN(contribution.amount) ? "" : contribution.amount} style={{ width: "6.5em", paddingLeft: "1.5em" }} onBlur={onBlur} onChange={onTextChange} onFocus={onFocus} />
                 <span style={{ marginLeft: "-5.5em", marginRight: "10em" }}>$</span>
 
-
             </></td>
-        </tr >
+        </tr>
     </>
 }
 export default ContributionsRow;

@@ -17,7 +17,6 @@ const Contributions = () => {
     const [messages, setMessages] = useState([])
 
     useEffect(() => {
-
         loadData();
     }, []);
 
@@ -46,13 +45,10 @@ const Contributions = () => {
         } else {
 
             setMessages(data)
-            //setContributions(contributionsInfo.contributors.filter(c => c.contribution !== null).flatMap(c => c.contribution));
         }
-
     }
 
     return <>
-
         {contributionsInfo.simcha ?
             <div className="container">
                 <h1 style={{ textAlign: "center", marginBottom: 20 }}>Contributions for {contributionsInfo.simcha.simchaName}</h1>
@@ -85,7 +81,6 @@ const Contributions = () => {
                                 contribute={!!c.contribution}
                                 amnt={c.contribution ? c.contribution.amount : 5}
                                 onAnyChange={updateContributionsArray}
-
                             />
                         )}
                     </tbody>
@@ -98,5 +93,4 @@ const Contributions = () => {
             : <h1 style={{ fontSize: 200, color: 'red' }}>LOADING</h1>}
     </>
 }
-
 export default Contributions;

@@ -31,15 +31,13 @@ const AlertMessage = ({ message, event }) => {
         }
         else if (event === 'unsuccessfullUpdate') {
             const copy = { ...alertVariables };
-            copy.variant = 'warning',            
-            copy.backgroundColor = '#fff8d2',
+            copy.variant = 'warning',
+                copy.backgroundColor = '#fff8d2',
                 copy.color = 'black',
                 copy.text = message
             setAlertVariables(copy)
         }
-
     }
-
 
     return <>
         <Alert dismissible={true} variant={alertVariables.variant} style={{ backgroundColor: alertVariables.backgroundColor, color: alertVariables.color }} >{alertVariables.text}</Alert>

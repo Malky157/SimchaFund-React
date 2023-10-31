@@ -16,7 +16,6 @@ const Home = () => {
         simchaName: '',
         date: new Date()
     });
-    //const [isValid, setIsValid] = useState(false)
     const [simchaAlertMessage, setSimchaAlertMessage] = useState('')
     const [searchText, setSearchText] = useState('')
     const getSimchas = async () => {
@@ -32,9 +31,6 @@ const Home = () => {
         const copy = { ...simcha };
         copy[e.target.name] = e.target.value
         setSimcha(copy)
-        // setIsValid(e.target.value.length > 0)        
-        // console.log(e.target.value)
-        // console.log(isValid)
     }
 
     const onAddClick = async () => {
@@ -45,7 +41,6 @@ const Home = () => {
             simchaName: '',
             date: new Date()
         })
-        //setIsValid(false)
         getSimchas();
     }
 
