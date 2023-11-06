@@ -9,7 +9,7 @@ The Simcha Fund solves these issues by allowing the organizer to add contributor
 
 For this project I used the following technologies:
 
-[![My Skills](https://skillicons.dev/icons?i=cs,dotnet,js,vite,react,bootstrap&theme=dark&perline=30)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=dotnet,cs,js,vite,react,bootstrap&theme=dark&perline=30)](https://skillicons.dev)
 
  ## Installing and Running
 
