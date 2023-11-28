@@ -88,7 +88,7 @@ namespace SimchaFund_React.Web.Controllers
                 var simchas = simchaRepo.GetAllSimchas();
                 foreach (Simcha simcha in simchas)
                 {
-                    if (contributionRepo.DidContributorContributeToSimcha == null && repo.CalculateBalance(editableContributor.Id) > 0)
+                    if (contributionRepo.DidContributorContributeToSimcha(editableContributor.Id, simcha.Id) == null && repo.CalculateBalance(editableContributor.Id) > 0)
                     {
                         contributionRepo.AddContribution(new Contribution()
                         {
