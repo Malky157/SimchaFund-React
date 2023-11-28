@@ -19,8 +19,7 @@ const NewContributor = () => {
         const copy = { ...contributor }
         copy[e.target.name] = e.target.value
         setContributor(copy)
-        setIsFormValid(contributor.firstName.length > 0 && contributor.lastName.length > 0 && contributor.cellNumber.length > 0 && parseInt(contributor.initialDeposit) > 0 && parseInt(contributor.initialDeposit))
-        console.log(contributor.firstName.length > 0 && contributor.lastName.length > 0 && contributor.cellNumber.length > 0 && parseInt(contributor.initialDeposit) > 0)
+        setIsFormValid(contributor.firstName.length > 0 && contributor.lastName.length > 0 && contributor.cellNumber.length > 0 && parseInt(contributor.initialDeposit) > 0 && contributor.dateCreated)
     }
 
     const onCheckboxClick = () => {
